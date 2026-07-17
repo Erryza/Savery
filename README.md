@@ -56,6 +56,35 @@ flutter build apk --release
 
 File hasil build ada di `build/app/outputs/flutter-apk/app-release.apk`, tinggal disalin ke HP Android dan diinstal langsung (aktifkan izin "Install from unknown sources" saat diminta).
 
+## Install ke iPhone sendiri (iOS)
+
+Beda dengan Android, iOS **tidak bisa** di-sideload cuma dengan kirim file lewat WhatsApp/dsb. Apple mewajibkan proses build & install pertama lewat **Xcode di macOS** — tidak ada jalan lain di luar App Store.
+
+### Yang wajib disiapkan
+
+- **Mac** (milik sendiri, pinjam, atau sewa Mac cloud seperti [MacinCloud](https://www.macincloud.com/)) dengan Xcode terpasang
+- **Apple ID** (akun gratis biasa sudah cukup untuk install ke device sendiri)
+- Kabel USB untuk sambungkan iPhone ke Mac (atau opsi wireless debugging di Xcode setelah pairing pertama lewat USB)
+
+### Langkah-langkah
+
+1. Clone repo & install dependencies seperti langkah di atas (`git clone`, `flutter pub get`), dilakukan di Mac.
+2. Buka folder iOS project di Xcode:
+   ```bash
+   open ios/Runner.xcworkspace
+   ```
+3. Di Xcode: pilih target **Runner** → tab **Signing & Capabilities** → aktifkan **Automatically manage signing** → pilih **Team** (login pakai Apple ID kamu di Xcode kalau belum, lewat Xcode → Settings → Accounts).
+4. Sambungkan iPhone via kabel USB, pilih iPhone kamu sebagai target device di toolbar Xcode.
+5. Klik tombol **Run (▶)**. Build pertama biasanya butuh waktu beberapa menit.
+6. Di iPhone, buka **Settings → General → VPN & Device Management**, cari profil developer dengan nama Apple ID kamu, lalu tap **Trust**.
+7. Buka app Savery dari home screen iPhone.
+
+### Catatan penting
+
+- Dengan **Apple ID gratis**, app akan **expired setiap 7 hari** — ulangi langkah 4-5 (sambungkan & klik Run lagi) untuk memperpanjang.
+- Kalau ingin app **tidak expired** dan lebih mudah update (tanpa perlu Mac tiap minggu), daftar **Apple Developer Program** ($99/tahun) dan distribusikan lewat **TestFlight** — install lebih mirip Android (tinggal buka app TestFlight, terima invite, install), dan build selanjutnya bisa otomatis lewat CI (GitHub Actions/Codemagic) tanpa perlu Mac fisik lagi.
+- Tidak punya Mac sama sekali? Sewa Mac cloud per jam/bulan (mis. MacinCloud) hanya untuk proses build & install awal ini.
+
 ## Tech stack
 
 - **Flutter** + **Dart**
